@@ -25,7 +25,7 @@
             // $conn = mysqli_connect("spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure");
             $con = mysqli_init();
             mysqli_ssl_set($con,NULL,NULL, "{path to CA cert}", NULL, NULL);
-            mysqli_real_connect($conn, "spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure", 3306, MYSQLI_CLIENT_SSL);
+            mysqli_real_connect($conn, "spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "library", 3306, MYSQLI_CLIENT_SSL);
             
             if (isset($_GET['submit']) && !empty($_GET['username'])) {
                 $uname = $_GET['username'];
