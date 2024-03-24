@@ -22,7 +22,7 @@
         </form>
         
         <?php
-            $conn = mysqli_connect("localhost", "root", "root1234", "library");
+            $conn = mysqli_connect("spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure");
 
             if (isset($_GET['submit']) && !empty($_GET['username'])) {
                 $uname = $_GET['username'];
