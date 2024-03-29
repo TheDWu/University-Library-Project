@@ -22,12 +22,27 @@
         </form>
         
         <?php
-            // $conn = mysqli_connect("spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure");
-            $conn = mysqli_init();
-            mysqli_ssl_set($conn,NULL,NULL, "{path to CA cert}", NULL, NULL);
-            mysqli_real_connect($conn, "spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure
-            ", 3306, MYSQLI_CLIENT_SSL);
             
+            
+            // $conn = mysqli_connect("spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure");
+           
+            // $conn = mysqli_init();
+            // mysqli_ssl_set($conn,NULL,NULL, "{path to CA cert}", NULL, NULL);
+            // mysqli_real_connect($conn, "spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure
+            // ", 3306, MYSQLI_CLIENT_SSL);
+            
+            $host = 'spring2024-gp9-library-azure.mysql.database.azure.comm';
+            $username = 'gp9library';
+            $password = 'Securewalls2';
+            $db_name = 'spring2024-gp9-library-azure';
+            
+            //Establishes the connection
+            $conn = mysqli_init();
+            mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306);
+            if (mysqli_connect_errno($conn)) {
+            die('Failed to connect to MySQL: '.mysqli_connect_error());
+            }
+
             if (isset($_GET['submit']) && !empty($_GET['username'])) {
                 $uname = $_GET['username'];
                 $query = "SELECT * FROM accounts WHERE account_uname LIKE '%$uname%'";
