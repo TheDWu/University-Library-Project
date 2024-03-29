@@ -31,7 +31,7 @@
             // mysqli_real_connect($conn, "spring2024-gp9-library-azure.mysql.database.azure.com", "gp9library", "Securewalls2", "spring2024-gp9-library-azure
             // ", 3306, MYSQLI_CLIENT_SSL);
             
-            $host = 'spring2024-gp9-library-azure.mysql.database.azure.comm';
+            $host = 'spring2024-gp9-library-azure.mysql.database.azure.com';
             $username = 'gp9library';
             $password = 'Securewalls2';
             $db_name = 'spring2024-gp9-library-azure';
