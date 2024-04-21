@@ -18,39 +18,110 @@
                 <button class = "navButton" onclick="document.location='\\room-search\\room-search.php'">Room Search</button>
                 <button class = "navButton" onclick="document.location='\\holds\\holds.php'">Holds</button>
                 <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
+                <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
                 <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
         </div>
     </div>
 
-    <div id = "accountContainer">
-        <div>
-            <h2>Account Summary</h2>                    
-        </div>
+    <?PHP 
+        session_start();
+        $uid = $_SESSION["ID"];
 
-        <div class="innerContainer">
-            <div id="info">
-                <h3>Info:<h3>
-                <label>Name</label></br>
-                <label>ID</label>
-            </div>
-            <div id="fees">
-                <h3>Fees:<h3>
-                <label>Fee 1</label></br>
-                <label>Fee 2</label>
-            </div>
-        </div>
+        $server = 'localhost';
+        $username = 'root'; 
+        $password = 'root1234'; 
+        $database = 'library'; 
+    
+        $conn = mysqli_connect($server, $username, $password, $database);
 
-        <div class="innerContainer" >
-            <div id="Checkedout-Items">
-                <h3>Checkedout Items:<h3>
-                <label>Item 1</label></br>
-                <label>Item 2</label>
-            </div>
-            <div id="Reserved-Rooms">
-                <h3>Fees:<h3>
-                <label>Reserved Room 1</label></br>
-                <label>Reserved Room 2</label>
-            </div>
+        #get user's name
+        $query = "SELECT * FROM accounts WHERE account_id = '$uid'";
+        $results = mysqli_query($conn, $query);
+        $userInfo = mysqli_fetch_assoc($results);
+
+        #getting checked out IDs
+        $checkedItemIds = [];
+        $query = "SELECT * FROM checkedout_items WHERE account_id = '$uid'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+            array_push($checkedItemIds, $row['item_id']);
+        }
+
+        #getting checked out Titles from their IDs
+        $displayBooks = [];
+        foreach($checkedItemIds as &$id) {
+            $query = "SELECT * FROM item_book WHERE ID = '$id'";
+            $results = mysqli_query($conn, $query);
+            while ($row = mysqli_fetch_assoc($results)) {
+                array_push($displayBooks, $row['title']);
+            }
+        }
+
+        #get fees
+        $feeIds = [];
+        $query = "SELECT * FROM fees where f_account_id = '$uid'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+            $feeIds[$row['f_item_id']] = $row['fee_amount'];
+        }
+
+        $displayFees = [];
+        foreach($feeIds as $id => $feeamt) {
+            $query = "SELECT * FROM item_book WHERE ID = '$id'";
+            $results = mysqli_query($conn, $query);
+            while ($row = mysqli_fetch_assoc($results)) {
+                $displayFees[$row['title']] = $feeamt;
+            }
+        }
+
+        #Get reserved Rooms
+        $displayRooms = [];
+        $query = "SELECT * FROM room_reserved WHERE reserved_by_id = '$uid'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+            $displayRooms[$row['room_no']] = $row['reserved_time_start'];
+        }
+    ?>
+
+    <div class="container2">
+        <h2>Account Summary</h2>
+        <div class="summary">
+        
+        <div class="section user-info">
+            <h3>User Information</h3>
+            <p><strong>Name:</strong> <?PHP echo $userInfo['fname'], " ", $userInfo['lname'];?></p>
+            <p><strong>ID:</strong> <?PHP echo $uid?> </p>
+        </div>
+        <div class="section fees">
+            <h3>Overdue Fees</h3>
+            <ul>
+            <?PHP 
+                foreach($displayFees as $feeId => $feeamt) {
+                    echo "<li><strong>$feeId:</strong> $$feeamt</li>";
+                }
+            ?>
+            </ul>
+        </div>
+        <div class="section checked-items">
+            <h3>Checked Items</h3>
+            <ul>
+            <?PHP 
+                foreach($displayBooks as &$title) {
+                    echo "<li><strong>$title</strong></li>";
+                }
+            ?>
+            </ul>
+        </div>
+        <div class="section reserved-rooms">
+            <h3>Reserved Rooms</h3>
+            <ul>
+            <?PHP 
+                foreach($displayRooms as $rn => $time) {
+                    echo "<li><strong>$rn</strong>: $time</li>";
+                }
+            ?>
+            </ul>
+        </div>
         </div>
     </div>
 </body>

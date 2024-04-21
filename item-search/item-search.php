@@ -4,394 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        position: relative;
-        min-height: 100vh; 
-        z-index: 0; 
-        overflow-x: hidden;
-        background-color: #1a1a1a;
-    }
-
-body::after {
-    content: "";
-    background-size: cover;
-    opacity: 0.4; 
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1; 
-}
-
-    .search-wrapper {
-    position: relative;
-    max-width: 400px;
-    margin: auto;
-    padding-top: calc(100vh / 6 - 20px);
-    
-    }
-
-    .input-icon-container {
-    display: flex;
-    align-items: center; 
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    }
-
-    .input-icon-container ::placeholder {
-    color: black; 
-    opacity: 1; 
-    }
-
-    .search-input { 
-    display: flex;
-    flex-grow: 1;
-    padding: 10px;
-    border: none; 
-    border-radius: 12px;
-    outline: none;
-    background-color: rgba(255, 255, 255, 0.0);
-    }
-    
-
-    .search-icon {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    }
-
-    .results {
-        display: grid;
-        grid-template-columns: repeat(4,1fr); /* Adjust column width as needed */
-        gap: 20px; 
-        padding: 20px;
-    }
-
-    .result-row {
-    display: flex;
-    background-color: #f9f9f9;
-    margin-bottom: 10px; 
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-    background-color: rgba(255, 255, 255, 0.5);
-    }
-    
-    .dropdowns-container{
-        display: flex;
-        justify-content: center;
-        max-width: 400px; 
-        margin: 15px auto; 
-        gap: 20px;
-        
-    }
-
-    .result-row img{
-        max-width: 200px; 
-        max-height: 200px;
-        margin-right: 20px; 
-    }
-    .text-content {
-    
-    flex-grow: 1;
-    }
-    .rowbuttons{
-        display: flex;
-        justify-content: flex-start; /* Adjust button alignment as needed */
-        width: 100%; /* Take full width */
-    margin-top: 10px; /* Space between text and buttons */
-    }
-
-    .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #912a30;
-    width: 100%;
-    align-items: center;
-    left: 0;
-    right: 0;
-    top: 0;
-}
-
-    .navButton {
-    border:none;
-    color: white;
-    background-color: transparent;
-    padding: 10px;
-    display: inline-block;
-    font-size: 25px;
-    border-left: .3px solid black;
-    border-right: .3px solid black;
-    }
-
-#buttons {
-    display: flex;
-    flex-direction: row;
-    background-color: #7d2328;
-    justify-content: center;
-    width:100%;
-}
-
-h1 {
-    font-family:"Andale Mono";
-    color: white;
-    letter-spacing: 2px;
-    margin-bottom:30px;
-}
-</style>
+    <link rel="stylesheet" href="item-search.css">
 </head>
 <body>
-<script >
-        function removeAll(s2){
-            for (var i = s2.options.length - 1; i >= 0; i--){
-                s2.remove(i);
-            }
-        }
-        function insertOptions(s1, s2){
-            var s1 = document.getElementById(s1);
-            var s2 = document.getElementById(s2);
-
-            if(s1.options[s1.selectedIndex].value == "item_book"){
-                var o1 = document.createElement('option');
-                var o2 = document.createElement('option');
-                var o3 = document.createElement('option');
-                var o4 = document.createElement('option');
-                var o5 = document.createElement('option');
-
-                o1.value = "ID";
-                o1.innerHTML = "ID";
-                o2.value = "ISBN";
-                o2.innerHTML = "ISBN";
-                o3.value = "title";
-                o3.innerHTML = "title";
-                o4.value = "author";
-                o4.innerHTML = "author";
-                o5.value = "genre";
-                o5.innerHTML = "genre";
-                removeAll(s2);
-                s2.options.add(o1)
-                s2.options.add(o2)
-                s2.options.add(o3)
-                s2.options.add(o4)
-                s2.options.add(o5)
-            }
-
-
-            if(s1.options[s1.selectedIndex].value == "item_laptop" || s1.options[s1.selectedIndex].value == "item_camera"){
-                var o1 = document.createElement('option');
-                var o2 = document.createElement('option');
-                var o3 = document.createElement('option');
-
-                o1.value = "ID";
-                o1.innerHTML = "ID";
-                o2.value = "brand";
-                o2.innerHTML = "brand";
-                o3.value = "model";
-                o3.innerHTML = "model";
-                removeAll(s2);
-                s2.options.add(o1)
-                s2.options.add(o2)
-                s2.options.add(o3)
-            }
-            if(s1.options[s1.selectedIndex].value == "room"){
-                var o1 = document.createElement('option');
-                var o2 = document.createElement('option');
-                var o3 = document.createElement('option');
-
-                o1.value = "room_no";
-                o1.innerHTML = "room number";
-                o2.value = "capacity";
-                o2.innerHTML = "capacity";
-                removeAll(s2);
-                s2.options.add(o1)
-                s2.options.add(o2)
-            }
-            if(s1.options[s1.selectedIndex].value == ""){
-                var o1 = document.createElement('option');
-
-                o1.value = "Search by";
-                o1.innerHTML = "Search by";
-                removeAll(s2);
-                s2.options.add(o1)
-            }
-            
-        }
-
-
-    </script>
-
-<div class="container">
-            <div id="title">
-                <h1>Cougar Library</h1>
+    <div class="container">
+        <div id="title">
+            <h1>Cougar Library</h1>
+        </div>
+        <div id="buttons">
+            <button class = "navButton" onclick="document.location='\\item-search\\item-search.php'">Item Search</button>
+            <button class = "navButton" onclick="document.location='\\room-search\\room-search.php'">Room Search</button>
+            <button class = "navButton" onclick="document.location='\\holds\\holds.php'">Holds</button>
+            <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
+            <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
+            <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
+        </div>
+    </div>
+    <div class="header"><h2>Item Search</h2></div>
+    
+    <form action="" method="GET">
+        
+        <div class="search-wrapper">
+        <div class="input-icon-container">
+            <input type="text" name="search" placeholder="search" class="search-input">
             </div>
-
-            <div id="buttons">
-                <button class = "navButton" onclick="document.location='\\item-search\\item-search.php'">Item Search</button>
-                <button class = "navButton" onclick="document.location='\\room-search\\room-search.php'">Room Search</button>
-                <button class = "navButton" onclick="document.location='\\holds\\holds.php'">Holds</button>
-                <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
-                <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
         </div>
-</div>
-
-<form action="item-search.php" method="post">
-    <div class="search-wrapper">
-    <div class="input-icon-container">
-        <input required type="text" name="search" placeholder="search" class="search-input">
-        <div class="search-icon" onclick="document.forms[0].submit();">
-           
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
         </div>
-    </div>
-    </div>
-    <div class="dropdowns-container">
-        <select required name="table" id="table" onchange="insertOptions('table', 'column')" > 
-            <option value="">Select item type</option>
-            <option value="item_book">Book</option>
-            <option value="room">Room</option>
-            <option value="item_laptop">Laptop</option>
-            <option value="item_camera">Camera</option>
-        </select><br>
-
-        <select required name="column" id="column">
-            <option value="">Search by</option>
-        </select><br>
-    </div>
- 
-</form>
+        
+        <div class="dropdowns-container">
+            <input type='submit' value='submit' name='submit' id="srch">
+        </div>
+    </form>
 
 
 <div class="results">
-    <?php
-    
-    $server = 'localhost'; // The host you want to connect to.
-    $username = 'root'; // Your database username.
-    $password = 'root1234'; // Your database password.
-    $database = 'library'; // Your database name.
-        
 
-// Establishes the connection
+    <?php
+    mysqli_report(MYSQLI_REPORT_OFF);
+    session_start();
+    $uid = $_SESSION["ID"];
+
+    $server = 'localhost';
+    $username = 'root'; 
+    $password = 'root1234'; 
+    $database = 'library'; 
 
     $conn = mysqli_connect($server, $username, $password, $database);
 
-// Check the connection
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    echo "";
-    if (isset($_POST['checkout'])) {
-        $itemId = mysqli_real_escape_string($conn, $_POST['item_id']);
-        $sqlUpdate = "UPDATE item SET isCheckedout = TRUE WHERE item_id = '$itemId'";
-        
-        if (mysqli_query($conn, $sqlUpdate)) {
-            echo "Book is checked out.";
-        } else {
-            echo "Error updating record: " . mysqli_error($conn);
+    if (isset($_GET['submit'])) {
+        #get not checked out books
+        $s = $_GET['search'];
+        $books = [];
+        $query = "SELECT ID, ISSN, title, author from item_book WHERE title LIKE '%$s%' AND ID NOT IN (SELECT item_id FROM checkedout_items);";
+        $result = mysqli_query($conn, $query);
+        while($row = mysqli_fetch_assoc($result)) {
+           $books[$row['ID']] = array($row['title'], $row['author'], $row['ISSN']);
         }
+        mysqli_free_result($result);
+
+
+        ## TODO
+        #get checked out books that isnt already checked out by user and user does not have a hold on them
+        $checkedBooks = [];
+        $query = "SELECT ID, title, author, ISSN FROM item_book WHERE ID IN
+        (SELECT item_id FROM checkedout_items 
+        WHERE account_id != '$uid' 
+        AND item_id NOT IN (SELECT h_item_id FROM holds_waitlist WHERE h_account_id = '$uid'))";
+        $result = mysqli_query($conn, $query);
+        while($row = mysqli_fetch_assoc($result)) {$checkedBooks[$row['ID']] = array($row['title'], $row['author'], $row['ISSN']);}
+        mysqli_free_result($result);
+
+        #display items for user
+        foreach($books as $id => $arr) {
+            echo "<form action='' method='GET'>";
+            echo "<div class='result-row'>" ;
+                echo "<div class='text-content'>";
+                    echo "<h3>$arr[0]</h3>";
+                    echo "<p>Author: $arr[1]</p>";
+                    echo "<p>ISSN: $arr[2]</p>";
+                echo "</div>"; 
+                echo "<input type='hidden' name='item_id' value='$id'>";
+                echo "<input type='submit' class='subin' value='Checkout' name='checkout'>";
+            echo "</div>"; 
+            echo "</form>";
+        }
+
+        #display checked items for user
+        foreach($checkedBooks as $id => $arr) {
+            echo "<form action='' method='GET'>";
+            echo "<div class='result-row'>" ;
+                echo "<div class='text-content'>";
+                    echo "<h3>$arr[0]</h3>";
+                    echo "<p>Author: $arr[1]</p>";
+                    echo "<p>ISSN: $arr[2]</p>";
+                echo "</div>"; 
+                echo "<input type='hidden' name='item_id' value='$id'>";
+                echo "<input type='submit' class='subin' value='Place Hold' name='hold'>";
+            echo "</div>"; 
+            echo "</form>";
+        }
+
+        unset($_GET['submit']);
     }
 
-    function isCheckedOut($conn, $itemId) {
-        $sql = "SELECT isCheckedout FROM item WHERE item_id = ?";
-        if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "s", $itemId);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_bind_result($stmt, $isCheckedOut);
-            if (mysqli_stmt_fetch($stmt)) {
-                return $isCheckedOut;
+
+    if (isset($_GET['checkout'])){
+        $id = $_GET['item_id'];
+        $uid = $_SESSION['ID'];
+        $date = date("y-m-d h:i:s");
+        $query = "SELECT * FROM checkedout_items WHERE item_id = '$id'";
+        $result = mysqli_query($conn, $query);
+        if (mysqli_num_rows($result) == 0) {
+            $query = "INSERT INTO checkedout_items(item_type, item_id, account_id, checkout_date,fees) VALUES ('book', '$id', '$uid', '$date', 0)";
+            $success = mysqli_query($conn, $query);
+            if ($success == true) {
+                mysqli_free_result($result);
+                header('location: item-search.php?search=&table=item_book&submit=submit');
             }
-            mysqli_stmt_close($stmt);
-        }
-        return false; // Default to false if not found or error
-    }
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['hold_bttn'])) {
-        $itemId = mysqli_real_escape_string($conn, $_POST['item_id']);
-
-        // Update position in holds_waitlist
-        $query = "UPDATE holds_waitlist SET position = position + 1 WHERE item_id = ?";
-        if ($stmt = mysqli_prepare($conn, $query)) {
-            mysqli_stmt_bind_param($stmt, "s", $itemId);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
-        }
-    }
-   
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['table']) && isset($_POST['column']) && isset($_POST['search']) && !empty($_POST['search']) && !empty($_POST['table']) && !empty($_POST['column'])) {
-       
-        $table = mysqli_real_escape_string($conn, $_POST['table']);
-        $column = mysqli_real_escape_string($conn, $_POST['column']);
-        $search = mysqli_real_escape_string($conn, $_POST['search']);
-       
-        // Construct the SQL query
-        $sql = "SELECT * FROM `$table` WHERE `$column` LIKE '%$search%'";
-    
-        // Execute the query
-        $result = $conn->query($sql);
-
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<div class='grid-wrapper'>";
-                    //div class used to seperate the background box from the text in to its proper layer in order allow for seperate styling
-                    echo "<div class='result-row'>" ;
-        
-                
-                    if (!empty($row['image'])) {
-                        echo '<img src="' . htmlspecialchars($row['image']) . '">';
-                    }
-                    $itemIsCheckedOut = isCheckedOut($conn, $row['ID']);
-                    
-                    //div class to seperate the text from the result box in order to allow for seperate styling
-                    echo "<div class='text-content'>";
-                
-                
-                    foreach ($row as $column => $value) {
-                        if($column != 'image' && $column != 'ID'){
-                        echo "<strong>" . ucfirst($column) . ":</strong> " . htmlspecialchars($value) . "<br>";
-                        }
-                    }
-                echo "<div class='rowbuttons'>";
-                    echo "<form id = 'checkoutForm' action='item-search.php' method='post'>";
-                    if ($itemIsCheckedOut) {
-                        // Display hold button
-                        echo "<input type = 'hidden' name = 'item_id' value='". htmlspecialchars($row['ID']) ."'>";
-                        echo "<button type='submit' name = 'hold_bttn'>Hold</button>";
-                    } else {
-                        echo "<input type = 'hidden' name = 'item_id' value='". htmlspecialchars($row['ID']) ."'>";
-                        echo "<input type = 'hidden' name = 'checkout' value='true'>";
-                        echo "<button type = 'submit' name = 'chk-bttn'>check-out</button>";
-                        }
-                echo "</form>";
-                echo "</div>"; 
-                echo "</div>"; 
-                echo "</div>"; 
-                echo "</div>"; 
-                
+            else {
+                $err_msg = mysqli_error($conn);
+                echo '<script type="text/javascript">';
+                echo 'window.onload = function() {';
+                echo 'alert("' . $err_msg . '");';
+                echo '}';
+                echo '</script>';
             }
-        } else {
-            echo "0 records found";
         }
-        
+
+        unset($_GET['checkout']);
     }
-    
-    $conn->close();
-    
-        ?>
-    
+
+    if (isset($_GET['hold'])) {
+        # get all people in queue for item
+        # find last spot in queue
+        # add entry with user in last position in queue
+        $id = $_GET['item_id'];
+        $uid = $_SESSION['ID'];
+        $query = "SELECT * FROM holds_waitlist WHERE h_item_id = '$id'";
+        $result = mysqli_query($conn, $query);
+        $highestPos = 0;
+        $highestUID = '';
+
+        while($row = mysqli_fetch_assoc($result)) {
+            if ($row['position'] > $highestPos) {
+                $highestPos = $row['position'];
+                $highestUID = $row['h_account_id'];
+            }
+        }
+        mysqli_free_result($result);
+
+        $highestPos += 1;
+        $query = "INSERT INTO holds_waitlist(h_item_id, position, h_account_id) VALUES ('$id', $highestPos, '$uid')";
+        
+        $success = mysqli_query($conn, $query);
+        if ($success === true) {
+            header('location: item-search.php?search=&table=item_book&submit=submit');
+        }
+        else {
+            $query = "INSERT INTO hold_attempts_logs(item_id, account_id, message) VALUES ('$id', '$uid', 'Hold Limit Exceeded')";
+            mysqli_query($conn, $query);
+            header('location: item-search.php?search=&table=item_book&submit=submit');
+        }
+    }  
+    ?>
 </div>
+
 </body>
 </html>

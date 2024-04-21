@@ -1,10 +1,12 @@
+/* body */
 body {
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #363233;
     margin: 0;
     padding: 0;
-  }
-  
+}
+
+/* main center container */
 .container {
     display: flex;
     flex-direction: column;
@@ -17,7 +19,7 @@ body {
 }
 
 .navButton {
-    border:none;
+    border: none;
     color: white;
     background-color: transparent;
     padding: 10px;
@@ -32,52 +34,51 @@ body {
     flex-direction: row;
     background-color: #7d2328;
     justify-content: center;
-    width:100%;
+    width: 100%;
 }
 
 h1 {
-    font-family:"Andale Mono";
+    font-family: "Andale Mono";
     color: white;
     letter-spacing: 2px;
-    margin-bottom:30px;
+    margin-bottom: 30px;
 }
 
 h2 {
-    font-family:"Andale Mono";
     color: white;
-    letter-spacing: 2px;
-    margin-bottom:30px;
 }
 
-.box {
+#mfa {
+    color: white;
+    font-size:20px;
+    font-style: bold;
+}
+
+
+.bodyContainer {
+    width: 80%;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.box, table {
     background-color: #912a30;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     max-height: 50%; /* Set a fixed height */
     overflow-y: auto; /* make the box scrollable */
-  }
-
-  .container2 {
-    width: 80%;
-    margin: 50px auto;
-    text-align: center;
-  }
-
-
-  table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #912a30;
-  }
+}
 
-  th, td {
+th, td {
     padding: 10px;
     border-bottom: 1px solid black;
     text-align: center;
-  }
+}
 
-  th {
+th {
     background-color: #7d2328;
-  }
+}

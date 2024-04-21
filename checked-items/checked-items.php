@@ -20,95 +20,131 @@
                 <button class = "navButton" onclick="document.location='\\room-search\\room-search.php'">Room Search</button>
                 <button class = "navButton" onclick="document.location='\\holds\\holds.php'">Holds</button>
                 <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
+                <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
                 <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
         </div>
 </div>
 
 <div class="container">
-  <h1>Checked out items</h1>
-  <!-- Need to modify to placeholders for php data. Should be  -->
+  <h2>Checked out items</h2>
   <div class="box">
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Name</th>
-          <th>Due Date</th>
+          <th>Checked Out</th>
+          <th>Check In By</th>
+          <th>Checkin</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Placeholder items (should be replaced with data from PHP) -->
-        <tr>
-          <td>1</td>
-          <td>Book</td>
-          <td>2024-04-15</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>DVD</td>
-          <td>2024-04-18</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Laptop</td>
-          <td>2024-04-22</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Headphones</td>
-          <td>2024-04-25</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Phone</td>
-          <td>2024-04-28</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Umbrealla</td>
-          <td>2024-05-12</td>
-        </tr>
+
+      
+  <?PHP
+    session_start();
+    $uid = $_SESSION["ID"];
+
+    $server = 'localhost';
+    $username = 'root'; 
+    $password = 'root1234'; 
+    $database = 'library'; 
+
+    $conn = mysqli_connect($server, $username, $password, $database);
+
+
+    $checkedItems = [];
+    $query = "SELECT * FROM checkedout_items WHERE account_id = '$uid'";
+    $results = mysqli_query($conn, $query);
+    while ($row = mysqli_fetch_assoc($results)) {
+      $checkedItems[$row['item_id']] = array($row['checkout_date'], $row['item_type']);
+    }
+
+
+    echo "<tbody>";
+    foreach ($checkedItems as $item_id => $arr) {
+      
+      $name = '';
+      if ($arr[1] = 'book') {
+        $query = "SELECT title from item_book WHERE ID = '$item_id'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+          $name = $row['title']; 
+        }
+      }
+      
+      $dt = new DateTime($arr[0]);
+      $dt->add(new DateInterval('P1W'));
+      $nd = $dt->format('Y-m-d H:i:s');
 
 
 
+      echo "<form action='' method='get'>";
+      echo "<tr>";
+      echo "<td>$name</td>";
+      echo "<td>$arr[0]</td>";
+      echo "<td>$nd</td>";
+      echo "<input type='hidden' name='id' value='$item_id'>";
+      echo "<input type='hidden' name='date' value='$arr[0]'>"; 
+      echo "<td><input type='submit' name='checkin' value='Check In'></td>";
+      echo "</tr>";
+      echo "</form>";
+    }
+    echo "</tbody>";
 
-      </tbody>
+    if (isset($_GET['checkin'])) {
+      #delete user entry in checkedout_items
+      #if there are holds on the item have the first person in queue checkout the item
+      #lower everyone esle's position in the queue for the item
+      $id = $_GET['id'];
+
+      #check if item is overdue and add fees if it is
+      $currentDateTime = new DateTime(); 
+      $days_diff = date_diff(new DateTime($_GET['date']), $currentDateTime)->days;
+      $feeamt = $days_diff * 0.5;
+
+      if ($feeamt > 0) {
+        $query = "INSERT INTO fees(f_item_id, f_account_id, fee_amount) VALUES ('$id', '$uid', '$feeamt')";
+        mysqli_query($conn, $query);
+      }
+
+      #delete user's checked entry
+      $query = "DELETE FROM checkedout_items WHERE item_id = '$id'";
+      mysqli_query($conn, $query);
+
+      #check if there is hold on the item
+      $query = "SELECT * FROM holds_waitlist where h_item_id = '$id'";
+      $results = mysqli_query($conn, $query);
+
+      if (mysqli_num_rows($results) > 0) {
+
+        while($row = mysqli_fetch_assoc($results)) {
+          $tuid = $row['h_account_id'];
+          if ($row['position'] == 1) {
+            #check out book for first person in queue
+            $query = "INSERT INTO checkedout_items(item_type, item_id, account_id, checkout_date,fees) VALUES ('book', 
+            '$id', '$tuid', '2024-06-01 01:01:01', 0)";
+            mysqli_query($conn, $query);
+
+            #delete first person's postion in queue
+            $query = "DELETE FROM holds_waitlist WHERE h_item_id = '$id' AND h_account_id = '$tuid'";
+            mysqli_query($conn, $query);
+
+          }
+          else {
+            #decremenet everyone else position in queue by one
+            $pos = $row['position'] - 1;
+            $query = "UPDATE holds_waitlist SET position = '$pos' WHERE h_account_id = '$tuid'";
+            echo $query . "    ";
+            mysqli_query($conn, $query);
+          }
+        }
+      }
+      header('location: checked-items.php');
+    }
+  ?>
+
     </table>
-    <!-- <div class="sortButtons"> 
-      <button onclick="sortBy('ID')">Sort by ID</button>
-      <button onclick="sortBy('Name')">Sort by Name</button>
-      <button onclick="sortBy('DueDate')">Sort by Due Date</button>
-      <button onclick="toggleSortOrder()">Toggle Sort Order</button>
-    </div> -->
-
-  <label for="sortButton">Sort:</label>
-
-  <select name="sortButtonTitle" id="sortButtonTitle">
-    <option value="ID">ID</option>
-    <option value="Name">Name</option>
-    <option value="DueDate">Due Date</option>
-
-  </select>
-
-  <label for="sortButtonOrder">By:</label>
-
-  <select name="sortButtonOrder" id="sortButtonOrder">
-    <option value="Ascending">Ascending</option>
-    <option value="Descending">Descending</option>
-
-  </select>
-  <button onclick="sortByButton()">Sort</button>
-
   </div>
-  <div class="account-number-label">Account Number</div>
-  <div class="account-number-value">123456789</div>
 </div>
 
-
-<!-- Sorting buttons  -->
-
-
-<!-- Link to the javascript file -->
-<script src ="/Project/frontend/checkoutpage.js"></script>  
 </body>
 </html>

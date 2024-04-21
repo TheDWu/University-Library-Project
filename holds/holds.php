@@ -20,29 +20,34 @@
                 <button class = "navButton" onclick="document.location='\\room-search\\room-search.php'">Room Search</button>
                 <button class = "navButton" onclick="document.location='\\holds\\holds.php'">Holds</button>
                 <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
+                <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
                 <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
         </div>
     </div>
 
-    <div id = "holdsContainer">
+
+    <div class="container2">
+        <h2>Current Holds</h2>
+        <div class="box">
+
             <?php
                 #CONTINUE SESSION
                 session_start();
 
                 #connect to db
-                echo "<h2>Your Current Holds</h2>";
                 $conn = mysqli_connect("localhost", "root", "root1234", "library");
+
                 #query holds_waitlist (returns itemId, accountId, and position in queue for that item)
                 $holds = []; #account id = [position, itemid]
                 $id = $_SESSION["ID"];
                 $query = "SELECT * from holds_waitlist";
-                $query = "SELECT title, position, item_id FROM item_book, holds_waitlist WHERE ID = item_id AND account_id = $id"; 
+                $query = "SELECT title, position, h_item_id FROM item_book, holds_waitlist WHERE ID = h_item_id AND h_account_id = $id"; 
                 $result = mysqli_query($conn, $query);
-                while($row = mysqli_fetch_assoc($result)) {$holds[$row["item_id"]] = array($row["title"], $row["position"]);}
+                while($row = mysqli_fetch_assoc($result)) {$holds[$row["h_item_id"]] = array($row["title"], $row["position"]);}
                 mysqli_free_result($result);
 
                 #build table header
-                echo "<table border='2'>
+                echo "<table>
                 <tr>
                 <th>Book Title</th>
                 <th>Hold Position</th>
@@ -60,14 +65,15 @@
                     echo "</tr>";
                     echo "</form>";
                 }
-                
+                echo "</table>";
+
                 #release user's hold and change every subsequent person pos in queue
                 if (isset($_GET['holdrelease'])) {
 
-                    #get current users position (just to be sure data is updated)
+                    #get current users position for selected item(just to be sure data is updated)
                     $user_pos = -1;
                     $v = $_GET['item_id'];
-                    $query = "SELECT position FROM holds_waitlist WHERE item_id = '$v' AND account_id = '$id'";
+                    $query = "SELECT position FROM holds_waitlist WHERE h_item_id = '$v' AND h_account_id = '$id'";
                     $result = mysqli_query($conn, $query);
                     if (mysqli_num_rows($result) == 1) {$user_pos = mysqli_fetch_assoc($result)['position'];}
                     mysqli_free_result($result);
@@ -77,28 +83,29 @@
                     $result = mysqli_query($conn, $query);
                     $updateUsers = [];
                     while ($row = mysqli_fetch_assoc($result)) {
-                        if ($_SESSION['ID'] != $row['account_id'] && $row['position'] > $user_pos) { # if not current user and the pos > current users' store it
-                            $updateUsers[$row['account_id']] = $row['position']-1;
+                        if ($_SESSION['ID'] != $row['h_account_id'] && $row['position'] > $user_pos) { # if not current user and the pos > current users' store it
+                            $updateUsers[$row['h_account_id']] = $row['position']-1;
                         }
                     }
                     mysqli_free_result($result);
 
+                    
                     #Update all instances -1 in updateUsers
                     if (count($updateUsers) > 0 ) {
-                        $query = "DELETE FROM holds_waitlist WHERE account_id = '$id';";
+                        $query = "DELETE FROM holds_waitlist WHERE h_account_id = '$id';";
                         foreach ($updateUsers as $id => $pos) {
-                            $query .= "UPDATE holds_waitlist SET position = $pos WHERE account_id = $id;";
+                            $query .= "UPDATE holds_waitlist SET position = $pos WHERE h_account_id = $id;";
                         }
                         if (count($updateUsers) > 0) {
                             mysqli_multi_query($conn, $query);
                         }
                     }
-                    else if ($user_pos != -1) {
-                        $query = "DELETE FROM holds_waitlist WHERE account_id = '$id'";
+                    else {
+                        $query = "DELETE FROM holds_waitlist WHERE h_account_id = '$id' AND h_item_id = '$v'";
                         mysqli_query($conn, $query);
                     }
 
-
+                    unset($_GET['holdrelease']);
                     header('Location: /holds/holds.php');
                     mysqli_close($conn);
                 }
