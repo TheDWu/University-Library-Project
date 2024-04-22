@@ -72,6 +72,7 @@ ob_start();
         $checkedBooks = [];
         $query = "SELECT ID, title, author, ISSN FROM item_book WHERE ID IN
         (SELECT item_id FROM checkedout_items 
+        AND title LIKE '%$s%'
         WHERE account_id != '$uid' 
         AND item_id NOT IN (SELECT h_item_id FROM holds_waitlist WHERE h_account_id = '$uid'))";
         $result = mysqli_query($conn, $query);
