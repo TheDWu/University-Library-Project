@@ -1,5 +1,61 @@
-<?PHP
+<?PHP 
+    session_start();
+    $uid = $_SESSION["ID"];
 
+    $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+    $username = "gp9library";
+    $password = "Securewalls2";
+    $dbname = "library";
+
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+    #get user's name
+    $query = "SELECT * FROM accounts WHERE account_id = '$uid'";
+    $results = mysqli_query($conn, $query);
+    $userInfo = mysqli_fetch_assoc($results);
+
+    #getting checked out IDs
+    $checkedItemIds = [];
+    $query = "SELECT * FROM checkedout_items WHERE account_id = '$uid'";
+    $results = mysqli_query($conn, $query);
+    while ($row = mysqli_fetch_assoc($results)) {
+        array_push($checkedItemIds, $row['item_id']);
+    }
+
+    #getting checked out Titles from their IDs
+    $displayBooks = [];
+    foreach($checkedItemIds as &$id) {
+        $query = "SELECT * FROM item_book WHERE ID = '$id'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+            array_push($displayBooks, $row['title']);
+        }
+    }
+
+    #get fees
+    $feeIds = [];
+    $query = "SELECT * FROM fees where f_account_id = '$uid'";
+    $results = mysqli_query($conn, $query);
+    while ($row = mysqli_fetch_assoc($results)) {
+        $feeIds[$row['f_item_id']] = $row['fee_amount'];
+    }
+
+    $displayFees = [];
+    foreach($feeIds as $id => $feeamt) {
+        $query = "SELECT * FROM item_book WHERE ID = '$id'";
+        $results = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($results)) {
+            $displayFees[$row['title']] = $feeamt;
+        }
+    }
+
+    #Get reserved Rooms
+    $displayRooms = [];
+    $query = "SELECT * FROM room_reserved WHERE reserved_by_id = '$uid'";
+    $results = mysqli_query($conn, $query);
+    while ($row = mysqli_fetch_assoc($results)) {
+        $displayRooms[$row['room_no']] = $row['reserved_time_start'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,65 +83,7 @@
         </div>
     </div>
 
-    <?PHP 
-        session_start();
-        $uid = $_SESSION["ID"];
 
-        $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
-        $username = "gp9library";
-        $password = "Securewalls2";
-        $dbname = "library";
-    
-        $conn = mysqli_connect($servername, $username, $password, $dbname);
-
-        #get user's name
-        $query = "SELECT * FROM accounts WHERE account_id = '$uid'";
-        $results = mysqli_query($conn, $query);
-        $userInfo = mysqli_fetch_assoc($results);
-
-        #getting checked out IDs
-        $checkedItemIds = [];
-        $query = "SELECT * FROM checkedout_items WHERE account_id = '$uid'";
-        $results = mysqli_query($conn, $query);
-        while ($row = mysqli_fetch_assoc($results)) {
-            array_push($checkedItemIds, $row['item_id']);
-        }
-
-        #getting checked out Titles from their IDs
-        $displayBooks = [];
-        foreach($checkedItemIds as &$id) {
-            $query = "SELECT * FROM item_book WHERE ID = '$id'";
-            $results = mysqli_query($conn, $query);
-            while ($row = mysqli_fetch_assoc($results)) {
-                array_push($displayBooks, $row['title']);
-            }
-        }
-
-        #get fees
-        $feeIds = [];
-        $query = "SELECT * FROM fees where f_account_id = '$uid'";
-        $results = mysqli_query($conn, $query);
-        while ($row = mysqli_fetch_assoc($results)) {
-            $feeIds[$row['f_item_id']] = $row['fee_amount'];
-        }
-
-        $displayFees = [];
-        foreach($feeIds as $id => $feeamt) {
-            $query = "SELECT * FROM item_book WHERE ID = '$id'";
-            $results = mysqli_query($conn, $query);
-            while ($row = mysqli_fetch_assoc($results)) {
-                $displayFees[$row['title']] = $feeamt;
-            }
-        }
-
-        #Get reserved Rooms
-        $displayRooms = [];
-        $query = "SELECT * FROM room_reserved WHERE reserved_by_id = '$uid'";
-        $results = mysqli_query($conn, $query);
-        while ($row = mysqli_fetch_assoc($results)) {
-            $displayRooms[$row['room_no']] = $row['reserved_time_start'];
-        }
-    ?>
 
     <div class="container2">
         <h2>Account Summary</h2>
