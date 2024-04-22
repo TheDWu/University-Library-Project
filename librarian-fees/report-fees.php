@@ -48,12 +48,12 @@ function checkCustom(selected) {
         $customDays = $_POST["customDays"] ?? null;
         $current_date = date('Y-m-d H:i:s');
 
-        $server = 'localhost';
-        $username = 'root'; 
-        $password = 'root1234'; 
-        $database = 'library'; 
-
-        $conn = mysqli_connect($server, $username, $password, $database);
+        $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+        $username = "gp9library";
+        $password = "Securewalls2";
+        $dbname = "library";
+            
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
