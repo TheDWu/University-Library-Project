@@ -1,7 +1,10 @@
+
+### Requirements to run application
 -need a php server with mysqli extension enabled (Dev PhP environment works fine)
 -need MySQL server
 
-There is and index page which acts as a login page whenever you go to the address you start the php server on.
-login with username "mstamm" and pw "123" for student view
-login in username "jronald" and pw "123" for librarian view
+### How to Log into Applications
+There is an index page which acts as a login page whenever you go to the address you start the php server on.
+Login with username "mstamm" and pw "123" for student view
+Login with username "jronald" and pw "123" for librarian view
 files are structured into extremely simple folder sctructure. That is mostly it.
