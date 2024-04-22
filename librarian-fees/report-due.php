@@ -1,4 +1,6 @@
-
+<?PHP
+ob_start();
+?>
 <!-- Self Note: check the checkedout_items table and see their checkout date and report on the ones soon to be due (2 weeks for students, 3 weeks for teachers) -->
 <!DOCTYPE html>
 <html lang="en">
