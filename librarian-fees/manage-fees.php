@@ -12,10 +12,13 @@
             <h1>Cougar Library - Fee Management</h1>
         </div>
         <div id="buttons">
-        <button class = "navButton" onclick="document.location='\\librarian-fees\\manage-fees.php'">Manage Fees</button>
-        <button class = "navButton" onclick="document.location='\\librarian-fees\\report-fees.php'">Report Fees</button>
-        <button class = "navButton" onclick="document.location='\\librarian-fees\\manage-items.php'">Manage Items</button>
-        <button class = "navButton" onclick="document.location='\\librarian-fees\\alerts.php'">Alerts</button>
+                <button class = "navButton" onclick="document.location='\\librarian-fees\\manage-fees.php'">Manage Fees</button>
+                <button class = "navButton" onclick="document.location='\\librarian-fees\\report-fees.php'">Report Fees</button>
+                <button class = "navButton" onclick="document.location='\\librarian-fees\\manage-items.php'">Manage Items</button>
+                <button class = "navButton" onclick="document.location='\\librarian-fees\\alerts.php'">Alerts</button>
+                <button class = "navButton" onclick="document.location='\\librarian-fees\\mostfreq.php'">Frequency Report</button>
+                <button class ="navButton" onclick ="document.location='\\librarian-fees\\report-due.php'">Due Soon</button>
+                <button class ="navButton" onclick ="document.location='\\index.php'">Logout</button>
         </div>
     </div>
 

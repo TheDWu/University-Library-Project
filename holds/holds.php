@@ -22,6 +22,7 @@
                 <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
                 <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
                 <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
+                <button class ="navButton" onclick ="document.location='\\index.php'">Logout</button>
         </div>
     </div>
 
@@ -33,9 +34,12 @@
             <?php
                 #CONTINUE SESSION
                 session_start();
-
+                $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+                $username = "gp9library";
+                $password = "Securewalls2";
+                $dbname = "library";
                 #connect to db
-                $conn = mysqli_connect("localhost", "root", "root1234", "library");
+                $conn = mysqli_connect($servername, $username, $password, $dbname);
 
                 #query holds_waitlist (returns itemId, accountId, and position in queue for that item)
                 $holds = []; #account id = [position, itemid]

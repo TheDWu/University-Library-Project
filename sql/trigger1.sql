@@ -17,3 +17,43 @@ BEGIN
 END
 
 //
+
+
+/* prevent Hold trigger ################################# */
+
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER BeforeAddHold BEFORE INSERT ON HOLDS_WAITLIST
+FOR EACH ROW
+BEGIN
+    DECLARE hold_count integer;
+    
+    SELECT COUNT(*) INTO hold_count FROM HOLDS_WAITLIST
+    WHERE h_item_id = NEW.h_item_id;
+
+    IF hold_count >= 4 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Hold limit exceeded';
+    END IF;
+END $$
+DELIMITER ;
+
+
+/* checkout log trigger ################################# */
+
+
+
+DELIMITER //
+
+CREATE TRIGGER after_checked_out_insert
+AFTER INSERT ON checkedout_items
+FOR EACH ROW
+BEGIN
+	INSERT INTO checkout_log (item_id) VALUES (NEW.item_id);
+END;
+//
+
+DELIMITER ;
+

@@ -11,7 +11,7 @@
 <body>
     <div class="wrapper">
         <form action="" method="GET">
-            <h1>Login</h1>
+            <h1>Library Login</h1>
             <div class="input-box">
                 <input type="text" placeholder="Username" name="username" id="username">
             </div>
@@ -19,11 +19,21 @@
                 <input type="password" placeholder="Password" name="pw">
             </div>
             <input type="submit" value="Submit" name="submit" class="btn">
+            <br><br>
+            <input type="submit" value="register" name="register" class="btn">
         </form>
         
-        <?php
-            $conn = mysqli_connect("localhost", "root", "root1234", "library");
 
+        <?php
+            $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+            $username = "gp9library";
+            $password = "Securewalls2";
+            $dbname = "library";
+            $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+            if (isset($_GET['register'])) {
+                header('location: register/register.php');
+            }
             if (isset($_GET['submit']) && !empty($_GET['username']) && !empty($_GET['pw'])) {
                 $uname = $_GET['username'];
                 $pw = $_GET['pw'];

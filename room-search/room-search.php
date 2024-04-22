@@ -22,6 +22,7 @@
             <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
             <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
             <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
+            <button class ="navButton" onclick ="document.location='\\index.php'">Logout</button>
         </div>
     </div>
 
@@ -39,9 +40,9 @@
     <?php
         session_start();
         $id = $_SESSION["ID"];
-        $servername = "localhost";
-        $username = "root";
-        $password = "root1234";
+        $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+        $username = "gp9library";
+        $password = "Securewalls2";
         $dbname = "library";
 
         $conn = new mysqli($servername, $username, $password, $dbname);

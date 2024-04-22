@@ -28,10 +28,10 @@ CREATE TABLE ITEM (
 CREATE TABLE ITEM_BOOK (
 	ID varchar(10) NOT NULL,
     ISSN varchar(8) NOT NULL,
-    title varchar(30) NOT NULL,
-    author varchar(15),
-    publisher varchar(20),
-    genre varchar(20),
+    title varchar(100) NOT NULL,
+    author varchar(100),
+    publisher varchar(100),
+    genre varchar(100),
     primary key (ISSN),
     foreign key (ID) references ITEM(item_id)
 );
@@ -123,4 +123,18 @@ CREATE TABLE ROOM_RESERVED(
     foreign key (room_no) REFERENCES ROOM(room_no),
     foreign key (reserved_by_id) REFERENCES ACCOUNTS(account_id),
     primary key (room_no, reserved_time_start)
+);
+
+
+CREATE TABLE hold_attempts_logs (
+    item_id VARCHAR(10),
+    account_id VARCHAR(10),
+    attempted_on DATETIME DEFAULT CURRENT_TIMESTAMP,
+    message VARCHAR(255),
+    primary key (item_id)
+);
+
+CREATE TABLE checkout_log(
+	item_id varchar(10),
+    check_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );

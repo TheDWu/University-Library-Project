@@ -22,6 +22,7 @@
                 <button class = "navButton" onclick="document.location='\\checked-items\\checked-items.php'">Checkedout Items</button>
                 <button class = "navButton" onclick="document.location='\\fees\\fees.php'">Fees</button>
                 <button class = "navButton" onclick="document.location='\\account\\account.php'">Account</button>
+                <button class ="navButton" onclick ="document.location='\\index.php'">Logout</button>
         </div>
 </div>
 
@@ -42,12 +43,12 @@
     session_start();
     $uid = $_SESSION["ID"];
 
-    $server = 'localhost';
-    $username = 'root'; 
-    $password = 'root1234'; 
-    $database = 'library'; 
+    $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
+    $username = "gp9library";
+    $password = "Securewalls2";
+    $dbname = "library";
 
-    $conn = mysqli_connect($server, $username, $password, $database);
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
     
     #get all users fees
     $query = "SELECT * FROM fees where f_account_id = $uid";
