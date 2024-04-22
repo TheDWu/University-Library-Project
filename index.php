@@ -32,7 +32,7 @@
             $conn = mysqli_connect($servername, $username, $password, $dbname);
 
             if (isset($_GET['register'])) {
-                header('location: https://spring2024gp9library.azurewebsites.net/register/register.php');
+                header('location:register/register.php');
             }
             if (isset($_GET['submit']) && !empty($_GET['username']) && !empty($_GET['pw'])) {
                 $uname = $_GET['username'];
