@@ -21,10 +21,7 @@
             <input type="submit" value="Submit" name="submit" class="btn">
             <br><br>
             <input type="submit" value="register" name="register" class="btn">
-        </form>
-        
-
-        <?php
+        </form><?php
             $servername = "spring2024-gp9-library-azure.mysql.database.azure.com";
             $username = "gp9library";
             $password = "Securewalls2";
@@ -55,8 +52,7 @@
 
                 unset($_GET['submit']);
             }
-        ?>
-    </div>
+        ?></div>
 
 </body>
 </html>
