@@ -1,5 +1,8 @@
 Full-Stack University Library Application
 
+A university library application that includes both a student and librarian view. 
+Students are able to search for books, reserve rooms, and manage their account. 
+Librarians can manage the library database and receive analytical reports.
 
 ### Requirements to run application ###
 -need a php server with mysqli extension enabled (Dev PhP environment works fine)
@@ -9,4 +12,5 @@ Full-Stack University Library Application
 There is an index page which acts as a login page whenever you go to the address you start the php server on.
 Login with username "mstamm" and pw "123" for student view
 Login with username "jronald" and pw "123" for librarian view
-files are structured into extremely simple folder sctructure. That is mostly it.
+
+You can create additional student accounts via the Create an account page.
